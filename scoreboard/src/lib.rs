@@ -1,20 +1,17 @@
+use std::collections::HashMap;
+
 use anyhow::Result;
-use http::Uri;
 use rusty_ulid::Ulid;
 use serde::{Deserialize, Serialize};
-use spin_sdk::{
-    http::{Request, Response},
-    http_component,
-    key_value::Store,
-};
-use std::collections::HashMap;
-use std::str;
+use spin_sdk::http::{IntoResponse, Request, ResponseBuilder};
+use spin_sdk::http_component;
+use spin_sdk::key_value::Store;
 
 #[http_component]
-fn scoreboard(req: Request) -> Result<Response> {
-    let ulid = get_ulid(req.uri())?;
+fn handle_scoreboard(req: Request) -> Result<impl IntoResponse> {
+    let ulid = get_ulid(req.query())?;
 
-    let score = match get_scores(&ulid) {
+    let score = match get_scores(ulid) {
         Ok(scores) => scores,
         Err(e) => {
             eprintln!("Error fetching scorecard: {}", e);
@@ -24,9 +21,7 @@ fn scoreboard(req: Request) -> Result<Response> {
     };
 
     let msg = serde_json::to_string(&score)?;
-    Ok(http::Response::builder()
-        .status(200)
-        .body(Some(msg.into()))?)
+    Ok(ResponseBuilder::new(200).body(msg).build())
 }
 
 #[derive(Deserialize, Serialize)]
@@ -52,8 +47,8 @@ impl Scorecard {
     }
 }
 
-fn get_ulid(url: &Uri) -> Result<Ulid> {
-    let params = simple_query_parser(url.query().unwrap_or(""));
+fn get_ulid(query: &str) -> Result<Ulid> {
+    let params = simple_query_parser(query);
     match params.get("ulid") {
         Some(raw_ulid) => {
             let ulid = raw_ulid.parse()?;
@@ -63,19 +58,18 @@ fn get_ulid(url: &Uri) -> Result<Ulid> {
     }
 }
 
-fn get_scores(ulid: &Ulid) -> Result<Scorecard> {
+fn get_scores(ulid: Ulid) -> Result<Scorecard> {
     let store = Store::open_default()?;
 
-    let raw_scorecard = store
-        .get(format!("fw-{}", ulid.to_string()))
+    let maybe_scorecard = store
+        .get_json::<Scorecard>(format!("fw-{}", ulid.to_string()).as_str())
         .map_err(|e| anyhow::anyhow!("Error fetching from key/value: {e}"))?;
-    let score: Scorecard = serde_json::from_slice(raw_scorecard.as_slice())?;
-    Ok(score)
+    Ok(maybe_scorecard.unwrap_or(Scorecard::new(ulid)))
 }
 
-fn simple_query_parser(q: &str) -> HashMap<String, String> {
+fn simple_query_parser(query: &str) -> HashMap<String, String> {
     let mut dict = HashMap::new();
-    q.split('&').for_each(|s| {
+    query.split('&').for_each(|s| {
         if let Some((k, v)) = s.split_once('=') {
             dict.insert(k.to_string(), v.to_string());
         }

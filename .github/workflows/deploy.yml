@@ -3,7 +3,7 @@ name: Deploy Website
 on:
   push:
     branches:
-      - 'main'
+      - "main"
 
   workflow_dispatch:
 
@@ -32,17 +32,13 @@ jobs:
       - name: Setup Spin
         uses: fermyon/actions/spin/setup@v1
         with:
-          version: v2.7.0
+          version: v3.5.1
+          plugins: aka
 
-      - name: Login to Fermyon Cloud
-        run: spin cloud login --token "${{ secrets.FERMYON_CLOUD_TOKEN }}"
+      - name: Login to Akamai Functions
+        run: spin aka login --token "${{ secrets.AKAMAI_FUNCTIONS_TOKEN }}"
 
-      - name: Deploy to Fermyon Cloud
-        uses: fermyon/actions/spin/deploy@v1
-        with:
-          run_build: false
-          fermyon_token: "${{ secrets.FERMYON_CLOUD_TOKEN }}"
-
-      - name: Run sqlite migration(s)
+      - name: Deploy to Akamai Functions
         run: |
-          spin cloud sqlite execute -a finicky-whiskers -l default "@highscore/migration.sql"
+          spin aka app link --app-id ${{ secrets.APP_ID }} 
+          spin aka deploy --no-confirm

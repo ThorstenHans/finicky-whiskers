@@ -1,28 +1,20 @@
 use anyhow::{Context, Result};
-use spin_sdk::{
-    http::{Request, Response},
-    http_component,
-    key_value::Store,
-    sqlite::Connection,
-};
+use spin_sdk::http::{IntoResponse, Request, ResponseBuilder};
+use spin_sdk::http_component;
+use spin_sdk::key_value::Store;
 
 #[http_component]
-fn reset(_req: Request) -> Result<Response> {
+fn handle_reset(_req: Request) -> anyhow::Result<impl IntoResponse> {
     if let Err(e) = reset_keyvalue() {
-        return Ok(http::Response::builder()
-            .status(500)
-            .body(Some(e.to_string().into()))?);
+        return Ok(ResponseBuilder::new(500).body(e.to_string()).build());
     }
     if let Err(e) = reset_highscore() {
-        return Ok(http::Response::builder()
-            .status(500)
-            .body(Some(e.to_string().into()))?);
+        return Ok(ResponseBuilder::new(500).body(e.to_string()).build());
     }
-    Ok(http::Response::builder()
-        .status(200)
-        .body(Some("Finicky Whickers is reset.".into()))?)
+    Ok(ResponseBuilder::new(200)
+        .body("Finicky Whickers is reset.")
+        .build())
 }
-
 fn reset_keyvalue() -> Result<()> {
     let store = Store::open_default().with_context(|| "Failed to open default key-value store")?;
     let keys = store
@@ -40,9 +32,11 @@ fn reset_keyvalue() -> Result<()> {
     Ok(())
 }
 
+const HIGH_SCORE_KEY: &str = "highscore";
+
 fn reset_highscore() -> Result<()> {
-    let conn = Connection::open_default()?;
-    let query = "DELETE FROM highscore";
-    conn.execute(query, &[])?;
-    Ok(())
+    let store = Store::open_default()?;
+    store
+        .delete(HIGH_SCORE_KEY)
+        .with_context(|| "Failed to reset high score")
 }
