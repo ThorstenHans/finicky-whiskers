@@ -1,90 +1,99 @@
-spin_manifest_version = "1"
+#:schema https://schemas.spinframework.dev/spin/manifest-v2/latest.json
+
+spin_manifest_version = 2
+
+[application]
 name = "finicky-whiskers"
 version = "1.1.0"
-trigger = { type = "http", base = "/" }
+authors = ["Akamai Developers <>"]
+description = ""
 
-# Serve static files
-[[component]]
-id = "fileserver"
-source = "components/fileserver.wasm"
-files = [{ source = "site/dist", destination = "/" }]
-[component.trigger]
-route = "/..."
-[component.build]
-workdir = "site"
-command = "make"
 
-# Redirect / to /index.html
-[[component]]
-id = "redirect-to-index"
-source = "components/redirect.wasm"
-environment = { DESTINATION = "/index.html" }
-[component.trigger]
-route = "/"
-executor = { type = "wagi" }
-[component.build]
-workdir = "redirect"
-command = "make"
-watch = ["**/*.go", "go.mod"]
-
-# Tally an individual event
-[[component]]
-id = "tally"
-source = "components/tally.wasm"
-key_value_stores = ["default"]
-[component.trigger]
+[[trigger.http]]
 route = "/tally"
-[component.build]
+component = "tally"
+
+[component.tally]
+source = "components/tally.wasm"
+allowed_outbound_hosts = []
+key_value_stores = ["default"]
+
+[component.tally.build]
 workdir = "tally"
-command = "make"
+command = "cargo build --target wasm32-wasip1 --release && mv target/wasm32-wasip1/release/tally.wasm ../components/"
 watch = ["src/**/*.rs", "Cargo.toml"]
 
-# Initialize session data
-[[component]]
-id = "session"
-source = "components/sessionv2.wasm"
-[component.trigger]
-route = "/session"
-[component.build]
-workdir = "sessionv2"
+[[trigger.http]]
+route = "/"
+component = "redirect"
+
+[component.redirect]
+source = { url = "https://github.com/fermyon/spin-redirect/releases/download/v0.1.0/redirect.wasm", digest = "sha256:8bee959843f28fef2a02164f5840477db81d350877e1c22cb524f41363468e52" }
+environment = { DESTINATION = "/index.html" }
+
+[[trigger.http]]
+route = "/..."
+component = "fileserver"
+
+[component.fileserver]
+source = { url = "https://github.com/spinframework/spin-fileserver/releases/download/v0.3.0/spin_static_fs.wasm", digest = "sha256:ef88708817e107bf49985c7cefe4dd1f199bf26f6727819183d5c996baa3d148" }
+files = [{ source = "site/dist", destination = "/" }]
+
+[component.fileserver.build]
 command = "make build"
-watch = ["src/**/*.ts", "package.json"]
+workdir = "site"
 
-# Get the scores for a particular game
-[[component]]
-id = "scoreboard"
-source = "components/scoreboard.wasm"
-key_value_stores = ["default"]
-[component.trigger]
+[[trigger.http]]
 route = "/score"
-[component.build]
-workdir = "scoreboard"
-command = "make"
-watch = ["src/**/*.rs", "Cargo.toml"]
+component = "scoreboard"
 
-# Stores highscores in key/value
-[[component]]
-id = "highscore"
-source = "components/highscore.wasm"
-sqlite_databases = ["default"]
-[component.trigger]
-route = "/highscore"
-[component.build]
-workdir = "highscore"
-command = "make"
-watch = ["src/**/*.rs", "Cargo.toml"]
-
-# Component to reset all state
-[[component]]
-id = "reset"
-source = "components/reset.wasm"
-allowed_http_hosts = []
+[component.scoreboard]
+source = "components/scoreboard.wasm"
+allowed_outbound_hosts = []
 key_value_stores = ["default"]
-sqlite_databases = ["default"]
-[component.trigger]
-route = "/reset"
-[component.build]
-workdir = "reset"
-command = "make"
+
+[component.scoreboard.build]
+command = "cargo build --target wasm32-wasip1 --release && mv target/wasm32-wasip1/release/scoreboard.wasm ../components/"
+workdir = "scoreboard"
 watch = ["src/**/*.rs", "Cargo.toml"]
 
+[[trigger.http]]
+route = "/highscore"
+component = "highscore"
+
+[component.highscore]
+source = "components/highscore.wasm"
+allowed_outbound_hosts = []
+key_value_stores = ["default"]
+
+[component.highscore.build]
+command = "cargo build --target wasm32-wasip1 --release && mv target/wasm32-wasip1/release/highscore.wasm ../components/"
+workdir = "highscore"
+watch = ["src/**/*.rs", "Cargo.toml"]
+
+[[trigger.http]]
+route = "/reset"
+component = "reset"
+
+[component.reset]
+source = "components/reset.wasm"
+allowed_outbound_hosts = []
+key_value_stores = ["default"]
+
+[component.reset.build]
+command = "cargo build --target wasm32-wasip1 --release && mv target/wasm32-wasip1/release/reset.wasm ../components/"
+workdir = "reset"
+watch = ["src/**/*.rs", "Cargo.toml"]
+
+[[trigger.http]]
+route = "/session"
+component = "session"
+
+[component.session]
+source = "components/session.wasm"
+allowed_outbound_hosts = []
+
+[component.session.build]
+command = "cargo build --target wasm32-wasip1 --release && mv target/wasm32-wasip1/release/session.wasm ../components/"
+workdir = "session"
+watch = ["src/**/*.rs", "Cargo.toml"]
