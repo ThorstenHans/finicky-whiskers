@@ -9,21 +9,21 @@ body {
 $gamewidth: 1180px;
 $gameheight: 820px;
 
-$green:  #56EEB8;
-$black:  #031835;
+$green:  #009CDE;
+$black:  #002856;
 $white:  #fff;
-$mauve:  #B287A3;
-$yellow: #F4D35E;
-$gold:   #F6CA83;
-$success:#629460;
+$mauve:  #54565B;
+$yellow: #FF9933;
+$gold:   #FF9933;
+$success:#00B050;
 
 $dark1:   $black;
-$dark2: #1A2A60;
-$dark3: #1F5080;
+$dark2: #002856;
+$dark3: #004A8F;
 
-$light3: #368CA1;
-$light2: #3998B7;
-$light1: #3AD0C6;
+$light3: #0077B6;
+$light2: #009CDE;
+$light1: #33B5E5;
 $light0:   $green;
 
 
@@ -180,7 +180,7 @@ header {
     .score {
         right: 2rem;
         border-radius: 4.96794rem;
-        background: linear-gradient(180deg, #374276 0%, #404F94 100%);
+        background: linear-gradient(180deg, #002856 0%, #004A8F 100%);
         text-align: right;
         font-family: Azeret Mono;
         font-size: 1.5rem;
@@ -199,12 +199,12 @@ header {
     position: relative;
     margin: 3rem auto 3rem;
     overflow: hidden;
-    background: url('../images/bg.jpg') no-repeat center top;
+    background: url('../images/bg3.jpg') no-repeat center top;
     background-size: contain;
     z-index: 345;
 
     &.gametime {
-        background: url('../images/bg2.jpg') no-repeat center top;
+        background: url('../images/bg3.jpg') no-repeat center top;
         background-size: contain;
         z-index: 650;
     }
@@ -313,7 +313,7 @@ header {
             }
 
             &.correct:active {
-                background: rgba(86, 238, 184, 0.95);
+                background: rgba(0, 156, 222, 0.95);
             }
 
             &:first-of-type {
@@ -392,22 +392,22 @@ header {
         background: transparent;
 
         &::-moz-progress-bar {
-            background: rgb(111,196,190);
-            background: linear-gradient(132deg, rgba(111,196,190,1) 0%, rgba(130,255,228,1) 100%);
+            background: rgb(0,156,222);
+            background: linear-gradient(132deg, rgba(0,119,182,1) 0%, rgba(51,181,229,1) 100%);
             border-radius: 50px;
             box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
         }
         
         &::-webkit-progress-value {
-            background: rgb(111,196,190);
-            background: linear-gradient(132deg, rgba(111,196,190,1) 0%, rgba(130,255,228,1) 100%);
+            background: rgb(0,156,222);
+            background: linear-gradient(132deg, rgba(0,119,182,1) 0%, rgba(51,181,229,1) 100%);
             border-radius: 50px;
             box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
         }
         
         &::-ms-fill {
-            background: rgb(111,196,190);
-            background: linear-gradient(132deg, rgba(111,196,190,1) 0%, rgba(130,255,228,1) 67%, white 100%); 
+            background: rgb(0,156,222);
+            background: linear-gradient(132deg, rgba(0,119,182,1) 0%, rgba(51,181,229,1) 67%, white 100%); 
             border-radius: 50px;
             box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
         }
@@ -767,7 +767,7 @@ header {
 }
 
 .slats-head {
-    background: url('../images/slats-head.svg') no-repeat 0 0;
+    background: url('../images/slats-head-aka.svg') no-repeat 0 0;
     background-size: contain;
     width: 12rem;
     min-height: 25rem;
@@ -907,7 +907,7 @@ footer {
             right: 0;
         }
 
-        &.cta-fermyon-www {
+        &.cta-akamai-www {
             left: 0;
         }
     }
