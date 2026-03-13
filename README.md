@@ -20,7 +20,7 @@ Finicky Whiskers is comprised of a handful of microservices.
 
 You'll need the `spin` CLI (`3.6.2` or newer) installed on your machine. You can install `spin` using `brew` (Addition installation approaches are described over on [spinframework.dev](https://spinframework.dev)):
 
-```bash
+```console
 brew tap spinframework/tap
 brew install spinframework/tap/spin
 ```
@@ -36,7 +36,7 @@ The `spin` CLI streamlines compiling even complex applications that consist of m
 
 Simply run
 
-```bash
+```console
 spin build
 ```
 
