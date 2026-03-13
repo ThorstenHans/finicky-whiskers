@@ -1,3 +1,5 @@
+# Finicky Whiskers
+
 To learn more about "The World's Most Adorable Manual Load Generator", Finicky Whiskers, and the technical details under the covers, you should read the four-part blog post series accompanying the project:
 
 1. [The World's Most Adorable Manual Load Generator](https://www.fermyon.com/blog/finicky-whiskers-part-1-intro)
@@ -7,54 +9,39 @@ To learn more about "The World's Most Adorable Manual Load Generator", Finicky W
 
 Finicky Whiskers is comprised of a handful of microservices.
 
-- [redirect](./redirect/README.md)
-- [reset](./reset/README.md)
+- [site](./site/README.md)
 - [scoreboard](./scoreboard/README.md)
 - [session](./session/README.md)
-- [site](./site/README.md)
 - [tally](./tally/README.md)
-
+- [reset](./reset/README.md)
+- [highscore](./highscore/)
 
 ## Prerequisites
 
-You'll need Spin [v0.4.1](https://github.com/fermyon/spin/releases/tag/v0.4.1)
-to run the site locally.
+You'll need the `spin` CLI (`3.6.2` or newer) installed on your machine. You can install `spin` using `brew` (Addition installation approaches are described over on [spinframework.dev](https://spinframework.dev)):
 
-You will also need the following to build and run the components:
-```
-$ brew tap kateinoigakukun/wasi-vfs https://github.com/kateinoigakukun/wasi-vfs.git
-$ brew install kateinoigakukun/wasi-vfs/wasi-vfs
-$ brew install npm
-$ brew tap tinygo-org/tools
-$ brew install tinygo
-$ rustup target add wasm32-wasi
+```bash
+brew tap spinframework/tap
+brew install spinframework/tap/spin
 ```
 
-It is expected that Rust will be installed already. Do not use Homebrew to install Rust,
-it will cause errors.
+Finicky Whiskers is implemented using different programming languages. To compile the entire app, you must have the following language toolchains installed on your machine:
 
-## To Build
+- Rust (`1.92.0` or newer) including the `wasm32-wasip1` target
+- Node.js (`24.12.0` or newer)
 
-This will by default build all microservices per the `Makefile` in their directories:
+## Compiling Finicky Whiskers
 
-```console
-spin build
-```
+The `spin` CLI streamlines compiling even complex applications that consist of multiple services.
 
-You may also build a particular microservice by navigating into its directory
-and running `make build` or from the root of this repo via
-`make build-<microservice>` e.g.:
-
-```console
-make build-session
-```
+Simply run `spin build`
 
 ## To Run
 
 The following command will serve the Finicky Whiskers site locally:
 
 ```console
-spin up --sqlite @highscore/migration.sql
+spin up
 ```
 
 This will run the game at [http://127.0.0.1:3000](http://127.0.0.1:3000)
@@ -72,7 +59,6 @@ make test-server
 
 For working on the game UI (styles, etc):
 
-
 Recompiling Assets:
 
 ```console
@@ -82,4 +68,3 @@ npm run styles
 ```
 
 To just run the UI locally (without the other services) use [Parcel](https://parceljs.org/features/development/) via `npm run dev` and then view the site at [localhost:1234](http://localhost:1234/)
-
