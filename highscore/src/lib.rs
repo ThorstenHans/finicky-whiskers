@@ -29,7 +29,7 @@ fn handle_highscore(req: Request) -> Result<impl IntoResponse> {
 
             let rank = match incoming_score_pos {
                 Some(r) => {
-                    println!("It is a high score at {}", r + 1);
+                    println!("It is a high score at position {}", r + 1);
                     r + 1
                 }
                 None => {
