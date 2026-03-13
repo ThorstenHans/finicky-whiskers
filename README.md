@@ -34,7 +34,11 @@ Finicky Whiskers is implemented using different programming languages. To compil
 
 The `spin` CLI streamlines compiling even complex applications that consist of multiple services.
 
-Simply run `spin build`
+Simply run
+
+```bash
+spin build
+```
 
 ## To Run
 
