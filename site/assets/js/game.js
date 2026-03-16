@@ -26,13 +26,15 @@ document.querySelectorAll('.modal-button').forEach(function (el) {
 });
 
 function setScoreboard() {
-  // get results from /scoreboard?ulid=${ulid}
-  fetch(`/score?ulid=${ulid}`).then(
-    response => response.json()
-  ).then(data => {
-    $("#scoreTotal").text(data.total);
-    $("#scoreFinal").text(data.total);
-  })
+  if (!!ulid) {
+    // get results from /scoreboard?ulid=${ulid}
+    fetch(`/score?ulid=${ulid}`).then(
+      response => response.json()
+    ).then(data => {
+      $("#scoreTotal").text(data.total);
+      $("#scoreFinal").text(data.total);
+    })
+  }
 }
 
 function isHighscore() {
@@ -47,7 +49,7 @@ function isHighscore() {
     response => response.json()
   ).then(data => {
     fetchedHighscore++;
-    console.log(data);
+    // console.log(data);
     highScore = data.high_score_table;
     if (data.is_high_score) {
       console.log("It's a highscore")
@@ -63,7 +65,7 @@ function isHighscore() {
 function showHighscores() {
   document.getElementById("highScoresList").textContent = ''
   highScore.forEach(element => {
-    console.log(element)
+    // console.log(element)
     var dt = document.createElement("dt")
     if (element.ulid === ulid && element.username !== '') {
       dt.style.fontWeight = 'bold'
@@ -94,7 +96,7 @@ $("#submitName").on('click', function () {
   }).then(
     response => response.json()
   ).then(data => {
-    console.log(data);
+    // console.log(data);
     highScore = data.high_score_table;
     showHighscores();
     $("#promptName").hide();
@@ -134,7 +136,8 @@ function setup() {
   fetch('/session').then(
     response => response.json()
   ).then(data => {
-    console.log(data);
+    // console.dir(data)
+    ulid = data.id;
     displayMorsels(data);
     setScoreboard();
   })
@@ -145,6 +148,7 @@ function setup() {
   var textLeft = document.getElementById('gameTime');
   var progressLeft = document.getElementById("progressBar");
   var timerId = setInterval(gameCountdown, 1000);
+
   function gameCountdown() {
     timerTicks++;
     countWasmModules();
@@ -185,7 +189,6 @@ function countWasmModules() {
 // render the data
 // https://w3collective.com/fetch-display-api-data-javascript/
 function displayMorsels(data) {
-  ulid = data.id
 
   data.menu.forEach(function (morsel) {
     const morselName = morsel.demand;
@@ -210,12 +213,11 @@ function displayMorsels(data) {
 // food is chosen
 $("nav > .button").on('click', function (i, e) {
   buttonPresses++;
-  console.log("button pressed");
   food = $(this).attr('id');
 
   if ($(this).hasClass('correct')) {
     fetch(`/tally?ulid=${ulid}&food=${food}&correct=true`).then(
-      response => console.log(response)
+      _response => console.log("tally came back") //console.log(response)
 
     );
 
@@ -232,7 +234,7 @@ $("nav > .button").on('click', function (i, e) {
   } else {
 
     fetch(`/tally?ulid=${ulid}&food=${food}&correct=false`).then(
-      response => console.log(response)
+      _response => console.log("tally came back") // console.log(response)
     );
 
     var nNope = '<span class="nope"></span>';
@@ -250,31 +252,32 @@ $("nav > .button").on('click', function (i, e) {
 
 // Food is chosen by key-press
 window.onkeydown = function (event) {
-  console.log(event.keyCode)
-  switch (event.keyCode) {
-    case 68: // D key
+  console.log(`handling keyDown event key: ${event.key}`);
+  switch (event.key.toLowerCase()) {
+    case "d":
       food = 'beef'
       console.log('beef pressed')
       break;
-    case 87: // W key
+    case "w":
       food = 'fish'
       console.log('fish pressed')
       break;
-    case 65: // A key
+    case "a":
       food = 'veg'
       console.log('veg pressed')
       break;
-    case 83: // S key
+    case "s":
       food = 'chicken'
       console.log('chicken pressed')
       break;
     default:
       console.log("Useless key pressed...")
+      return;
   }
 
   if ($(`#${food}`).hasClass('correct')) {
     fetch(`/tally?ulid=${ulid}&food=${food}&correct=true`).then(
-      response => console.log(response)
+      _response => console.log("tally came back") // console.log(response)
     );
 
     $(".slats-head").removeClass("slats-eating slats-eating2 slats-huh");
@@ -285,7 +288,7 @@ window.onkeydown = function (event) {
   } else {
 
     fetch(`/tally?ulid=${ulid}&food=${food}&correct=false`).then(
-      response => console.log(response)
+      _response => console.log("tally came back") //console.log(response)
     );
 
     $(".slats-head").removeClass("slats-eating slats-eating2 slats-huh");
@@ -319,7 +322,7 @@ $(document).ready(function () {
     $("#gameInit").click();
     $(".intro-one").hide();
     $(".intro-two").show();
-    $(".pet").show();
+
   });
 
   $("#introOne").on('click', function () {

@@ -8,6 +8,11 @@ version = "1.1.0"
 authors = ["Akamai Developers <>"]
 description = ""
 
+[variables]
+log_level = { default = "info" }
+track_game_start = { default = "false" }
+track_game_start_origin = { default = "no://no:0000" }
+track_game_start_path = { default = "" }
 
 [[trigger.http]]
 route = "/tally"
@@ -91,7 +96,11 @@ component = "session"
 
 [component.session]
 source = "components/session.wasm"
-allowed_outbound_hosts = []
+allowed_outbound_hosts = ["{{ track_game_start_origin }}"]
+
+[component.session.variables]
+track_game_start = "{{ track_game_start }}"
+track_game_start_url = "{{ track_game_start_origin }}/{{ track_game_start_path }}"
 
 [component.session.build]
 command = "cargo build --target wasm32-wasip1 --release && mv target/wasm32-wasip1/release/session.wasm ../components/"

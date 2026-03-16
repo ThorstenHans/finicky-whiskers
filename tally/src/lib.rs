@@ -57,6 +57,7 @@ fn parse_query_params(query: &str) -> Result<Tally> {
     let correct = params.get("correct");
 
     if ulid.is_none() || food.is_none() || correct.is_none() {
+        println!("Invalid payload {}", query);
         anyhow::bail!("ULID, food, and correct are required: {}", query);
     }
 
