@@ -137,7 +137,7 @@ body {
   }
 }
 h3 {
-  color: #56EEB8;
+  color: #009CDE;
 }
 
 html,
@@ -199,7 +199,7 @@ header .game-menu {
 header .score {
   right: 2rem;
   border-radius: 4.96794rem;
-  background: linear-gradient(180deg, #374276 0%, #404F94 100%);
+  background: linear-gradient(180deg, #002856 0%, #004A8F 100%);
   text-align: right;
   font-family: Azeret Mono;
   font-size: 1.5rem;
@@ -217,12 +217,12 @@ header .score {
   position: relative;
   margin: 3rem auto 3rem;
   overflow: hidden;
-  background: url("../images/bg.jpg") no-repeat center top;
+  background: url("../images/bg3.jpg") no-repeat center top;
   background-size: contain;
   z-index: 345;
 }
 #whiskerStage.gametime {
-  background: url("../images/bg2.jpg") no-repeat center top;
+  background: url("../images/bg3.jpg") no-repeat center top;
   background-size: contain;
   z-index: 650;
 }
@@ -291,7 +291,7 @@ header .score {
   background: rgba(255, 255, 255, 0.5);
 }
 #whiskerStage nav .button.correct:active {
-  background: rgba(86, 238, 184, 0.95);
+  background: rgba(0, 156, 222, 0.95);
 }
 #whiskerStage nav .button:first-of-type {
   margin-left: 2%;
@@ -354,20 +354,20 @@ header .score {
   background: transparent;
 }
 #whiskerStage progress::-moz-progress-bar {
-  background: rgb(111, 196, 190);
-  background: linear-gradient(132deg, rgb(111, 196, 190) 0%, rgb(130, 255, 228) 100%);
+  background: rgb(0, 156, 222);
+  background: linear-gradient(132deg, rgb(0, 119, 182) 0%, rgb(51, 181, 229) 100%);
   border-radius: 50px;
   box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
 }
 #whiskerStage progress::-webkit-progress-value {
-  background: rgb(111, 196, 190);
-  background: linear-gradient(132deg, rgb(111, 196, 190) 0%, rgb(130, 255, 228) 100%);
+  background: rgb(0, 156, 222);
+  background: linear-gradient(132deg, rgb(0, 119, 182) 0%, rgb(51, 181, 229) 100%);
   border-radius: 50px;
   box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
 }
 #whiskerStage progress::-ms-fill {
-  background: rgb(111, 196, 190);
-  background: linear-gradient(132deg, rgb(111, 196, 190) 0%, rgb(130, 255, 228) 67%, white 100%);
+  background: rgb(0, 156, 222);
+  background: linear-gradient(132deg, rgb(0, 119, 182) 0%, rgb(51, 181, 229) 67%, white 100%);
   border-radius: 50px;
   box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
 }
@@ -434,22 +434,22 @@ header .score {
   font-size: 3.5rem;
   font-weight: bold;
   line-height: 1;
-  color: #56EEB8;
+  color: #009CDE;
   text-shadow: -0.35vw 0.35vw rgb(67, 20, 57);
 }
 #whiskerStage .modal .box strong {
-  color: #F6CA83;
+  color: #FF9933;
 }
 #whiskerStage .modal .box input#yourName {
   text-transform: uppercase;
   font-size: 1rem;
   letter-spacing: 0.02em;
-  color: #1A2A60;
+  color: #002856;
   font-family: Azeret Mono, monospace;
   width: 20%;
 }
 #whiskerStage .modal .box .button {
-  background: #3AD0C6;
+  background: #33B5E5;
   font-weight: bold;
   font-size: 1.5rem;
   padding: 1.5rem 3rem;
@@ -462,8 +462,8 @@ header .score {
   padding: 0.5rem !important;
   min-height: 5rem;
   border-radius: 0.1rem;
-  background: #F6CA83;
-  color: #1A2A60;
+  background: #FF9933;
+  color: #002856;
   min-height: 2rem;
   font-size: 1rem !important;
 }
@@ -534,13 +534,13 @@ header .score {
   color: #fff;
 }
 #whiskerStage #gameFinishModal .modal-content .leaderboard p a {
-  color: #3998B7;
+  color: #009CDE;
 }
 #whiskerStage #gameFinishModal .modal-content .button.is-info {
   font-size: 0.825rem;
   padding: 1.2rem;
-  background-color: #3998B7;
-  color: #031835;
+  background-color: #009CDE;
+  color: #002856;
   margin: 0;
 }
 #whiskerStage #gameFinishModal .modal-content p small {
@@ -552,12 +552,12 @@ header .score {
   top: 0;
   bottom: 0;
   padding: 1rem 2rem 2rem 2rem;
-  background: #1A2A60;
+  background: #002856;
   text-align: center;
   z-index: 250;
 }
 #whiskerStage aside.highscore h2 {
-  color: #F6CA83;
+  color: #FF9933;
   font-size: 1.725rem;
   padding: 1rem;
   margin: 1rem auto 2rem;
@@ -673,7 +673,7 @@ header .score {
 }
 
 .slats-head {
-  background: url("../images/slats-head.svg") no-repeat 0 0;
+  background: url("../images/slats-head-aka.svg") no-repeat 0 0;
   background-size: contain;
   width: 12rem;
   min-height: 25rem;
@@ -717,7 +717,7 @@ header .score {
 #elements svg h3, #elements svg h4, #elements img h3, #elements img h4 {
   margin: 1rem 0;
   font-weight: bold;
-  color: #56EEB8;
+  color: #009CDE;
 }
 #elements ul {
   margin: 2rem 0;
@@ -729,8 +729,8 @@ header .score {
   padding-top: 16rem;
 }
 #elements li code {
-  background: #3998B7;
-  color: #031835;
+  background: #009CDE;
+  color: #002856;
 }
 
 .beef > .cat-bubble:after {
@@ -771,7 +771,7 @@ footer a {
 footer a.cta-components {
   right: 0;
 }
-footer a.cta-fermyon-www {
+footer a.cta-akamai-www {
   left: 0;
 }
 footer .chair {
